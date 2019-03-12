@@ -24,5 +24,7 @@
 
 `log`——布尔值，是否将日志保存成txt文件，是`true`，否`false`
 
+`logPath`——字符串，日志文件保存路径，`log`为`true`时有效
+
 #### 运行
 直接运行main.py，或在当前目录的命令行里执行`python main.py`
