@@ -1,15 +1,9 @@
 {
-	"homePath": "D:/workspace",
-	"workPaths": [
-		"CNU-TrigCISP-enroll/webapp/WEB-INF/jsp/enroll/admitEnrollData.jsp",
-		"CNU-TrigCISP-enroll/java/com/szjx/trig/enroll/struts2/AdmitEnrollDataAction.java",
-		"CNU-TrigCISP-enroll/java/com/szjx/trig/enroll/struts2/BackupAction.java",
-		"CNU-TrigCISP-enroll/resources/com/szjx/trig/enroll/bean/EnrollStudent.map.xml",
-		"/CNU-TrigCISP-enroll/webapp/index.html"
-	],
-	"sourcePaths": ["CNU-TrigCISP-enroll/java", "CNU-TrigCISP-enroll/resources"],
-	"outputPath": "CNU-TrigCISP-enroll/webapp/WEB-INF/classes",
+	"projectPath": "D:/workspace/zsgl",
+	"sourcePaths": ["java", "resources"],
+	"outputPath": "webapp/WEB-INF/classes",
 	"targetPath": "E:/test/tCp/target",
+	"patchTxtPath": "./patch.txt",
 	"log": true,
-	"logPath": "E:/test/tCp/log"
+	"logPath": "E:/test/tCp/log/zsgl/"
 }

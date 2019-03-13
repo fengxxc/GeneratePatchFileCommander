@@ -12,11 +12,12 @@ LOG = ''
 # -----------------------------
 def copy_file_recursive(config):
     global LOG
-    work_paths = config['workPaths']
+    patch_path = config['patchTxtPath']
+    work_paths = get_workpath_by_patchtxt(patch_path)
     source_path = config['sourcePaths']
     output_path = config['outputPath']
     target_path = config['targetPath']
-    home_path = config['homePath']
+    home_path = config['projectPath']
 
     for path in work_paths:
         final_path = path
@@ -35,12 +36,9 @@ def copy_file_recursive(config):
         try:
             shutil.copy(source_filename, final_abs_path)
         except FileNotFoundError:
-            # print("未找到文件: " + source_filename)
             LOG += "未找到文件: " + source_filename + "\n"
         else:
-            # print("已复制：'" + source_filename + "'\n    至：'" + final_abs_path + "'")
             LOG += "已复制：'" + source_filename + "'\n    至：'" + final_abs_path + "'\n"
-        # print("-------------------------------------")
         LOG += "-------------------------------------\n"
 
     # -----------------------------
@@ -76,8 +74,8 @@ def load_config(path):
 # 源自：https://www.polarxiong.com/archives/Python-%E7%94%9F%E6%88%90%E7%9B%AE%E5%BD%95%E6%A0%91.html
 # -----------------------------
 def get_dir_list(path, placeholder=''):
-    BRANCH = '├─'
-    LAST_BRANCH = '└─'
+    BRANCH = '├─ '
+    LAST_BRANCH = '└─ '
     TAB = '│  '
     EMPTY_TAB = '   '
     folder_list = [folder for folder in os.listdir(path) if os.path.isdir(os.path.join(path, folder))]
@@ -107,15 +105,32 @@ def get_time_format():
 def get_date_format():
     return time.strftime("%Y-%m-%d", time.localtime())
 
+# -----------------------------
+# 路径拼接，修复os.path.join第二个参数以/开头就失效的bug
+# -----------------------------
 def path_join(a, b):
     if b.startswith("/"):
         b = b.replace("/", "", 1)
     return os.path.join(a, b)
 
+# -----------------------------
+# 保存日志
+# -----------------------------
 def save_log(txt, path='./'):
+    if not os.path.exists(path):
+        os.makedirs(path)
     f = open(path + get_date_format() + '.txt', 'a')
     f.write(txt)
     f.close()
+
+# -----------------------------
+# 读取patch中的补丁文件路径
+# -----------------------------
+def get_workpath_by_patchtxt(patch_filename):
+    work_path = []
+    with open(patch_filename, 'r', encoding="utf-8") as f:
+        work_path = [li.replace('Index:', '').rstrip("\n").strip() for li in f if li.startswith('Index:')]
+    return work_path
 
 def main():
     global LOG
