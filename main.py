@@ -3,6 +3,7 @@ import re
 import shutil
 import json
 import time
+import pyperclip as ppc
 
 LOG = ''
 
@@ -12,8 +13,13 @@ LOG = ''
 # -----------------------------
 def copy_file_recursive(config):
     global LOG
-    patch_path = config['patchTxtPath']
-    work_paths = get_workpath_by_patchtxt(patch_path)
+    is_path_from_file = config['patchTxtFromFile']
+    if is_path_from_file:
+        work_paths = get_workpath_by_patchtxt(config['patchTxtPath'])
+        LOG += 'patch文本来源于"'+ config['patchTxtPath'] +'"\n'
+    else:
+        work_paths = get_workpath_by_clipboard()
+        LOG += 'patch文本来源于[剪贴板]\n'
     source_path = config['sourcePaths']
     output_path = config['outputPath']
     target_path = config['targetPath']
@@ -127,9 +133,14 @@ def save_log(txt, path='./'):
 # 读取patch中的补丁文件路径
 # -----------------------------
 def get_workpath_by_patchtxt(patch_filename):
-    work_path = []
     with open(patch_filename, 'r', encoding="utf-8") as f:
-        work_path = [li.replace('Index:', '').rstrip("\n").strip() for li in f if li.startswith('Index:')]
+        work_path = [li.replace('Index:', '').rstrip('\n').strip() for li in f if li.startswith('Index:')]
+    return work_path
+
+def get_workpath_by_clipboard():
+    txt = ppc.paste()
+    lines = re.findall('Index:(.+)$', txt, re.M)
+    work_path = [li.rstrip('\r').strip() for li in lines]
     return work_path
 
 def main():
@@ -151,5 +162,7 @@ def main():
     print(LOG)
     input("Press <Enter> to Esc")
 
+
 if __name__ == '__main__':
     main()
+    # get_workpath_by_clipboard()
