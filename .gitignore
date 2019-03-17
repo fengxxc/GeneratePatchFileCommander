@@ -115,3 +115,9 @@ dmypy.json
 
 # other
 .idea/
+.vscode
+.settings/
+bin/
+.classpath
+.project
+*.class

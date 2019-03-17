@@ -23,7 +23,7 @@ def copy_file_recursive(config):
     source_path = config['sourcePaths']
     output_path = config['outputPath']
     target_path = config['targetPath']
-    home_path = config['projectPath']
+    project_path = config['projectPath']
 
     for path in work_paths:
         final_path = path
@@ -38,7 +38,7 @@ def copy_file_recursive(config):
         if not os.path.exists(final_abs_path):
             os.makedirs(final_abs_path)
         # 复制文件
-        source_filename = path_join(home_path, final_path)
+        source_filename = path_join(project_path, final_path)
         try:
             shutil.copy(source_filename, final_abs_path)
         except FileNotFoundError:
@@ -47,8 +47,8 @@ def copy_file_recursive(config):
             LOG += "已复制：'" + source_filename + "'\n    至：'" + final_abs_path + "'\n"
         LOG += "-------------------------------------\n"
 
-    # -----------------------------
-# 数组arr中的元素在str中吗？
+# -----------------------------
+# 数组arr中的元素有在str中的吗？
 # 在，就返回这个元素；不在，就返回空
 # -----------------------------
 def is_arr_match_str(arr, str):
@@ -130,13 +130,16 @@ def save_log(txt, path='./'):
     f.close()
 
 # -----------------------------
-# 读取patch中的补丁文件路径
+# 读取patch中的补丁文件路径从文件
 # -----------------------------
 def get_workpath_by_patchtxt(patch_filename):
     with open(patch_filename, 'r', encoding="utf-8") as f:
         work_path = [li.replace('Index:', '').rstrip('\n').strip() for li in f if li.startswith('Index:')]
     return work_path
 
+# -----------------------------
+# 读取patch中的补丁文件路径从剪贴板
+# -----------------------------
 def get_workpath_by_clipboard():
     txt = ppc.paste()
     lines = re.findall('Index:(.+)$', txt, re.M)
@@ -165,4 +168,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # get_workpath_by_clipboard()
