@@ -158,10 +158,7 @@ public class App {
         Matcher m = p.matcher(cbTxt);
         while (m.find()) {
             workPath.add(m.group().replace("Index:", "").trim().replaceAll(LINE_SEP, "").replaceAll("\r", ""));
-            // workPath.add(m.group());
-            // System.out.println(m.group());
         }
-        // System.out.println("***********************************");
         return workPath.toArray(new String[workPath.size()]);
     }
 

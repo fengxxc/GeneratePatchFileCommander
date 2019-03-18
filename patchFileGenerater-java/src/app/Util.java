@@ -74,7 +74,6 @@ public class Util {
         // int index = path.lastIndexOf(SEPARATOR);
          // 路径分隔用"/"，因为SVN diff导出的路径是"/"
         int index = path.lastIndexOf(SEPARATOR);
-        System.out.println(index);
         return path.substring(0, index+1);
     }
 
