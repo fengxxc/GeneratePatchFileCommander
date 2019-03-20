@@ -111,6 +111,7 @@ public class App {
                 Util.copyFile(sourceFilename, finalAbsPath);
             } catch (FileNotFoundException e) {
                 LOG.append("未找到文件: " + sourceFilename + LINE_SEP);
+                LOG.append("-------------------------------------" + LINE_SEP);
                 e.printStackTrace();
                 continue;
             } catch (IOException e) {

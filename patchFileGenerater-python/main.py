@@ -43,6 +43,7 @@ def copy_file_recursive(config):
             shutil.copy(source_filename, final_abs_path)
         except FileNotFoundError:
             LOG += "未找到文件: " + source_filename + "\n"
+            LOG += "-------------------------------------\n"
         else:
             LOG += "已复制：'" + source_filename + "'\n    至：'" + final_abs_path + "'\n"
         LOG += "-------------------------------------\n"
