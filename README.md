@@ -25,32 +25,31 @@ python版的配置文件为config.json；Java版的配置文件为config.propert
 
 两者只是文件格式上的不同
 
-`projectPath`——字符串，项目所在的目录
+- `projectPath`——字符串，项目所在的目录
+- `sourcePaths`——数组[字符串]，源码路径（config.properties版用英文逗号隔开）
 
-`sourcePaths`——数组[字符串]，源码路径（config.properties版用英文逗号隔开）
+- `outputPath`——字符串，源码编译路径
 
-`outputPath`——字符串，源码编译路径
+- `targetPath`——字符串，导出的文件存放的路径
 
-`targetPath`——字符串，导出的文件存放的路径
+- `patchTxtFromFile`——布尔值，SVN diff生成的patch文本是否来源于文件
 
-`patchTxtFromFile`——布尔值，SVN diff生成的patch文本是否来源于文件
+- `patchTxtPath`——字符串，SVN diff生成的patch.txt文件的路径，`patchTxtFromFile`为`true`时有效
 
-`patchTxtPath`——字符串，SVN diff生成的patch.txt文件的路径，`patchTxtFromFile`为`true`时有效
-
-`log`——布尔值，是否将日志保存成txt文件
-
-`logPath`——字符串，日志文件保存路径，`log`为`true`时有效
+- `log`——布尔值，是否将日志保存成txt文件
+- `logPath`——字符串，日志文件保存路径，`log`为`true`时有效
 
 #### 运行
 
 python版：
 
-首次使用运行`pip install -r requirements.txt`安装依赖
+- 首次使用运行`pip install -r requirements.txt`安装依赖
 
-直接运行main.py，或在当前目录的命令行里执行`python main.py`
+- 直接运行main.py，或在当前目录的命令行里执行`python main.py`
+
 
 java版：
 
-首次使用配置好Java环境及config.properties的路径
+- 首次使用配置好Java环境及config.properties的路径
 
-直接运行App.java下的`main`方法
+- 直接运行App.java下的`main`方法
