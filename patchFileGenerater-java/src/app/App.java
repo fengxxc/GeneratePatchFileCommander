@@ -32,7 +32,7 @@ public class App {
         LOG.append(LINE_SEP + "======== " + getTimeFormat() + " 给我生 <(￣︶￣)↗[GO!] ========" + LINE_SEP);
         Properties config = null;
         try {
-            config = Util.loadConfig("E:\\github\\patchFileGenerater\\patchFileGenerater-java\\src\\app\\config.properties");
+            config = Util.loadConfig(Class.class.getClass().getResource("/app").getPath() + File.separator + "config.properties");
         } catch (FileNotFoundException e) {
             LOG.append("error: 未找到配置文件" + LINE_SEP);
             e.printStackTrace();
