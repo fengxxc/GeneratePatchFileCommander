@@ -3,8 +3,9 @@
 	"sourcePaths": ["java", "resources"],
 	"outputPath": "webapp/WEB-INF/classes",
 	"targetPath": "E:/test/tCp/target",
-	"patchTxtFromFile": true,
+	"patchTxtFromFile": false,
 		"patchTxtPath": "./patch.txt",
 	"log": true,
-		"logPath": "E:/test/tCp/log/zsgl/"
+		"logPath": "E:/test/tCp/log/zsgl/",
+	"include": ["webapp/WEB-INF/jsp/ks/ksCjb.jsp"]
 }

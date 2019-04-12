@@ -24,7 +24,8 @@ def copy_file_recursive(config):
     output_path = config['outputPath']
     target_path = config['targetPath']
     project_path = config['projectPath']
-
+    include = config['include'] # list
+    work_paths = set(work_paths + include)
     for path in work_paths:
         final_path = path
         source_match = is_arr_match_str(source_path, path)
