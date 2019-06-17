@@ -15,31 +15,37 @@ def copy_file_recursive(config):
     global LOG
     is_path_from_file = config['patchTxtFromFile']
     if is_path_from_file:
-        work_paths = get_workpath_by_patchtxt(config['patchTxtPath'])
+        work_paths = get_workpath_by_patchtxt(config['patchTxtPath'], config['projectPath'])
         LOG += 'patch文本来源于"'+ config['patchTxtPath'] +'"\n'
     else:
-        work_paths = get_workpath_by_clipboard()
+        work_paths = get_workpath_by_clipboard(config['projectPath'])
         LOG += 'patch文本来源于[剪贴板]\n'
     source_path = config['sourcePaths']
     output_path = config['outputPath']
     target_path = config['targetPath']
     project_path = config['projectPath']
     include = config['include'] # list
-    work_paths = set(work_paths + include)
+    # 如果include里的路径是目录路径，就把目录下的所有文件路径取出来
+    _include = []
+    for i in include:
+        _include.extend(list_all_files(path_join(project_path, i)))
+    work_paths = set(work_paths + _include) # 合并patch里的路径和配置文件里include的路径
     for path in work_paths:
-        final_path = path
+        source_abs_filename = path
         source_match = is_arr_match_str(source_path, path)
         if (source_match is not None):
             # 源码路径替换成编译路径
-            final_path = path.replace(source_match, output_path, 1)
+            source_abs_filename = path.replace(source_match, output_path, 1)
             # 文件扩展名替换
-            final_path = final_path.replace(".java", ".class")
-        final_abs_path = path_join(target_path, get_file_path(final_path))
+            source_abs_filename = source_abs_filename.replace(".java", ".class")
+        final_abs_path = path_join(target_path, get_file_path(source_abs_filename.replace(project_path, ''))) # 去掉开头的项目根路径config['projectPath']
         # 创建不存在的目录
         if not os.path.exists(final_abs_path):
             os.makedirs(final_abs_path)
+
         # 复制文件
-        source_filename = path_join(project_path, final_path)
+        # source_filename = path_join(project_path, source_abs_filename)
+        source_filename = source_abs_filename
         try:
             shutil.copy(source_filename, final_abs_path)
         except FileNotFoundError:
@@ -119,6 +125,8 @@ def get_date_format():
 def path_join(a, b):
     if b.startswith("/"):
         b = b.replace("/", "", 1)
+    elif b.startswith("\\"):
+        b = b.replace("\\", "", 1)
     return os.path.join(a, b)
 
 # -----------------------------
@@ -134,19 +142,30 @@ def save_log(txt, path='./'):
 # -----------------------------
 # 读取patch中的补丁文件路径从文件
 # -----------------------------
-def get_workpath_by_patchtxt(patch_filename):
+def get_workpath_by_patchtxt(patch_filename, root_path=''):
     with open(patch_filename, 'r', encoding="utf-8") as f:
-        work_path = [li.replace('Index:', '').rstrip('\n').strip() for li in f if li.startswith('Index:')]
+        work_path = [path_join(root_path, li.replace('Index:', '').rstrip('\n').strip()) for li in f if li.startswith('Index:')]
     return work_path
 
 # -----------------------------
 # 读取patch中的补丁文件路径从剪贴板
 # -----------------------------
-def get_workpath_by_clipboard():
+def get_workpath_by_clipboard(root_path=''):
     txt = ppc.paste()
     lines = re.findall('Index:(.+)$', txt, re.M)
-    work_path = [li.rstrip('\r').strip() for li in lines]
+    work_path = [path_join(root_path, li.rstrip('\r').strip()) for li in lines]
     return work_path
+
+def list_all_files(rootdir):
+    _files = []
+    list = os.listdir(rootdir) #列出文件夹下所有的目录与文件
+    for i in range(0,len(list)):
+           path = os.path.join(rootdir,list[i])
+           if os.path.isdir(path):
+              _files.extend(list_all_files(path))
+           if os.path.isfile(path):
+              _files.append(path)
+    return _files
 
 def main():
     global LOG
